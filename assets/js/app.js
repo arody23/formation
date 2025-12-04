@@ -238,8 +238,12 @@ class Authentication {
 // ========================================
 
 // Initialiser l'authentification au chargement
+// Sauf sur la page de login (index.html) qui a son propre système
 document.addEventListener('DOMContentLoaded', () => {
-  new Authentication();
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  if (currentPage !== 'index.html') {
+    new Authentication();
+  }
 });
 
 // Fonction utilitaire pour accéder à la session globalement
