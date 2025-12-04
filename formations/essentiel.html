@@ -338,21 +338,25 @@
         border-bottom: 2px solid #E5E7EB;
         padding-bottom: 1.5rem;
         margin-bottom: 1.5rem;
+        height: auto;
       }
 
-      .sidebar h3 {
-        font-size: 1.2rem;
+      .sidebar-title {
+        font-size: 1rem;
         margin-bottom: 1rem;
       }
 
-      .chapter-list {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 0.75rem;
+      .chapters-list {
+        flex-direction: row;
+        gap: 0.5rem;
+        flex-wrap: wrap;
       }
 
-      .chapter-btn {
-        padding: 0.75rem;
-        font-size: 0.85rem;
+      .chapter-item {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+        flex: 1;
+        min-width: 80px;
       }
 
       .chapter-navigation {
@@ -382,9 +386,14 @@
         margin-bottom: 1.5rem;
       }
 
-      #video-placeholder {
+      .video-container {
+        margin: 1.5rem 0;
+      }
+
+      .video-placeholder {
         height: 300px;
         border-radius: 0.75rem;
+        font-size: 2rem;
       }
 
       .chapter-content {
@@ -392,9 +401,10 @@
         line-height: 1.6;
       }
 
+      .chapter-content h3,
       .chapter-content h4 {
-        font-size: 1.15rem;
-        margin-top: 1.25rem;
+        font-size: 1.05rem;
+        margin-top: 1rem;
         margin-bottom: 0.75rem;
       }
 
@@ -406,12 +416,20 @@
         margin-bottom: 0.5rem;
       }
 
-      .progress-section {
-        margin-bottom: 1.5rem;
+      .chapter-content pre {
+        padding: 1rem;
+        font-size: 0.85rem;
+        margin: 1rem 0;
       }
 
-      .progress-label {
-        font-size: 0.85rem;
+      .btn-quiz {
+        padding: 0.85rem;
+        font-size: 0.9rem;
+        margin-top: 1.5rem;
+      }
+
+      .progress-top {
+        margin-bottom: 1.5rem;
       }
     }
 
@@ -430,66 +448,108 @@
 
       header .container {
         flex-direction: column;
-        gap: 0.75rem !important;
+        gap: 0.5rem !important;
         align-items: stretch !important;
       }
 
       header h1 {
         font-size: 1.1rem !important;
         text-align: center;
+        word-break: break-word;
+        order: -1;
       }
 
       header a,
       header button {
         width: 100% !important;
-        padding: 0.7rem !important;
-        font-size: 0.9rem !important;
+        padding: 0.65rem !important;
+        font-size: 0.8rem !important;
         text-align: center;
       }
 
+      .progress-top {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .progress-bar {
+        height: 6px;
+      }
+
+      .progress-text {
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+      }
+
       .formation-wrapper {
-        gap: 1rem;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
       }
 
       .sidebar {
-        padding-bottom: 1rem;
+        padding: 1rem;
         margin-bottom: 1rem;
-        border-bottom: 1px solid #E5E7EB;
+        border-bottom: 2px solid #E5E7EB;
+        height: auto;
       }
 
-      .sidebar h3 {
-        font-size: 1rem;
+      .sidebar-title {
+        font-size: 0.95rem;
         margin-bottom: 0.75rem;
       }
 
-      .chapter-list {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 0.5rem;
+      .chapters-list {
+        flex-direction: row;
+        gap: 0.4rem;
+        flex-wrap: wrap;
       }
 
-      .chapter-btn {
-        padding: 0.65rem 0.5rem;
-        font-size: 0.8rem;
+      .chapter-item {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.75rem;
+        flex: 1;
+        min-width: 60px;
+        text-align: center;
+      }
+
+      .chapter-item-text {
+        font-size: 0.7rem;
+        display: none;
+      }
+
+      .chapter-item-duration {
+        display: none;
       }
 
       .main-content {
-        padding: 1rem;
+        padding: 0.75rem;
+      }
+
+      .chapter-header {
+        padding-bottom: 0.75rem;
+        margin-bottom: 1rem;
       }
 
       .chapter-title {
-        font-size: 1.25rem;
-        margin-bottom: 0.75rem;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
       }
 
       .chapter-meta {
         gap: 0.5rem;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         margin-bottom: 1rem;
       }
 
-      #video-placeholder {
+      .video-container {
+        margin: 1rem 0;
+        border-radius: 8px;
+      }
+
+      .video-placeholder {
         height: 200px;
         border-radius: 0.5rem;
+        font-size: 1.5rem;
       }
 
       .chapter-content {
@@ -497,15 +557,21 @@
         line-height: 1.5;
       }
 
+      .chapter-content h3 {
+        font-size: 1rem;
+        margin-top: 0.75rem;
+        margin-bottom: 0.5rem;
+      }
+
       .chapter-content h4 {
-        font-size: 1.05rem;
-        margin-top: 1rem;
+        font-size: 0.95rem;
+        margin-top: 0.75rem;
         margin-bottom: 0.5rem;
       }
 
       .chapter-content ul {
         margin-left: 1rem;
-        padding-right: 0.5rem;
+        margin-bottom: 0.75rem;
       }
 
       .chapter-content li {
@@ -513,21 +579,38 @@
         font-size: 0.9rem;
       }
 
-      .btn-nav {
+      .chapter-content p {
+        margin-bottom: 0.75rem;
+      }
+
+      .chapter-content pre {
         padding: 0.75rem;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
+        margin: 0.75rem 0;
+        overflow-x: auto;
       }
 
-      .progress-section {
-        margin-bottom: 1rem;
+      .chapter-content code {
+        font-size: 0.75rem;
       }
 
-      .progress-label {
+      .chapter-navigation {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .btn-nav {
+        width: 100%;
+        padding: 0.7rem;
         font-size: 0.8rem;
       }
 
-      .progress-track {
-        height: 6px;
+      .btn-quiz {
+        width: 100%;
+        padding: 0.7rem;
+        font-size: 0.8rem;
+        margin-top: 1rem;
       }
     }
   </style>
