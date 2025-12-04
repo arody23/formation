@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Certificat de Formation</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family: 'Georgia', 'Times New Roman', serif;background:linear-gradient(135deg,#f3f6ff 0%,#eef2ff 100%);min-height:100vh;padding:30px}
+    .container{max-width:1100px;margin:0 auto}
+    header{display:flex;justify-content:space-between;align-items:center;padding:16px;background:#fff;border-radius:8px;border-bottom:3px solid #eef2ff;margin-bottom:18px}
+    .logo{color:#334155;font-weight:700;font-size:1.2rem}
+    .logout-btn{background:#667eea;color:#fff;border:0;padding:8px 14px;border-radius:8px;cursor:pointer}
+
+    .certificate-container{background:#fff;border-radius:12px;padding:28px;box-shadow:0 18px 50px rgba(30,41,59,0.06)}
+
+    /* certificate area to capture */
+    #certificateDisplay{width:100%;background:linear-gradient(180deg,#ffffff 0%,#fbfdff 60%);padding:48px;border-radius:10px;border:6px solid transparent;position:relative;overflow:hidden;font-family:Georgia,serif}
+    #certificateDisplay::before{content:'';position:absolute;inset:0;border-radius:6px;padding:6px;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-mask:linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0);opacity:0.06}
+
+    .cert-top{display:flex;align-items:center;gap:20px;justify-content:center;margin-bottom:14px}
+    .cert-seal{width:92px;height:92px;flex:0 0 92px}
+
+    .cert-title{font-size:28px;color:#0f172a;font-weight:700;letter-spacing:2px;margin-bottom:6px;text-align:center}
+    .cert-phrase{font-size:14px;color:#334155;text-align:center;margin-bottom:18px}
+
+    .cert-name{font-size:32px;color:#1e293b;font-weight:800;text-align:center;margin:22px 0;letter-spacing:1px}
+    .cert-sub{font-size:16px;color:#475569;text-align:center;margin-bottom:8px}
+
+    .cert-meta{display:flex;justify-content:space-between;gap:10px;margin-top:18px;padding-top:18px;border-top:1px solid #eef2ff}
+    .meta-item{flex:1;text-align:left}
+    .meta-label{font-size:12px;color:#667eea;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+    .meta-value{font-size:14px;color:#0f172a}
+
+    .cert-footer{display:flex;justify-content:space-between;align-items:center;margin-top:26px}
+    .signature{display:flex;flex-direction:column;align-items:center}
+    .signature-line{width:200px;border-top:2px solid #111;margin-bottom:6px}
+    .signature-name{font-weight:700}
+    .signature-title{font-size:12px;color:#475569}
+
+    .cert-id{font-size:12px;color:#94a3b8;text-align:right}
+
+    /* actions */
+    .actions{display:flex;gap:10px;justify-content:center;margin-top:20px}
+    .btn{padding:10px 16px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:#667eea;color:#fff}
+    .btn-outline{background:#fff;border:2px solid #667eea;color:#334155}
+
+    /* watermark text */
+    .watermark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-18deg);font-size:80px;color:rgba(99,102,241,0.06);font-weight:800;pointer-events:none;user-select:none}
+
+    @media (max-width:700px){.cert-name{font-size:22px}.cert-title{font-size:20px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">Plateforme de Formation</div>
+      <button class="logout-btn" onclick="logoutUser()">Déconnexion</button>
+    </header>
+
+    <div class="certificate-container">
+      <div id="certificateDisplay" aria-label="Certificat de réussite">
+        <div class="watermark" aria-hidden="true">CERTIFIED</div>
+
+        <div class="cert-top">
+          <div class="cert-seal" id="cert-seal">
+            <!-- inline SVG professional seal -->
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="92" height="92" role="img" aria-label="sceau de certification">
+              <defs>
+                <linearGradient id="sealGrad" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#667eea"/>
+                  <stop offset="100%" stop-color="#764ba2"/>
+                </linearGradient>
+              </defs>
+              <circle cx="100" cy="100" r="90" fill="url(#sealGrad)" />
+              <circle cx="100" cy="100" r="66" fill="#fff" />
+              <g fill="#667eea">
+                <path d="M98 65c-1 0-2 0-3 1-10 3-18 11-21 21-1 4 2 7 6 6 8-3 15-3 21-3 6 0 13 0 21 3 4 1 7-2 6-6-3-10-11-18-21-21-1-1-2-1-3-1z"/>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <div class="cert-title">CERTIFICAT DE RÉUSSITE</div>
+            <div class="cert-phrase">Ce document atteste que la personne nommée ci-dessous a complété la formation</div>
+          </div>
+        </div>
+
+        <div class="cert-name" id="cert-user-name">—</div>
+        <div class="cert-sub" id="cert-course-name">Formation Professionnelle</div>
+        <div class="cert-sub" id="cert-course-extra" style="margin-bottom:10px">&nbsp;</div>
+
+        <div class="cert-meta">
+          <div class="meta-item">
+            <div class="meta-label">Score</div>
+            <div class="meta-value" id="detail-score">-</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Date</div>
+            <div class="meta-value" id="detail-completion-date">-</div>
+          </div>
+          <div class="meta-item" style="text-align:right">
+            <div class="meta-label">Certificat #</div>
+            <div class="meta-value" id="detail-cert-number">-</div>
+          </div>
+        </div>
+
+        <div class="cert-footer">
+          <div class="signature">
+            <div class="signature-line"></div>
+            <div class="signature-name" id="cert-trainer-name">Formateur</div>
+            <div class="signature-title" id="cert-trainer-title">Directeur - Plateforme</div>
+            <div style="font-size:12px;color:#6b7280;margin-top:6px" id="signature-date">Délivré le -</div>
+          </div>
+
+          <div class="cert-id" id="cert-id-right">&nbsp;</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="downloadAsPNG()">Télécharger (PNG)</button>
+        <button class="btn btn-primary" onclick="downloadAsJPG()">Télécharger (JPG)</button>
+        <button class="btn btn-outline" onclick="shareCertificate()">Partager</button>
+        <button class="btn" onclick="window.location.href='../dashboard.html'">Retour au Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    // Populate certificate fields from session
+    document.addEventListener('DOMContentLoaded', function(){
+      const session = window.getCurrentSession ? window.getCurrentSession() : JSON.parse(localStorage.getItem('userSession'));
+      if(!session || !session.quizScore){
+        alert('Certificat non disponible. Complétez d\'abord le quiz.');
+        window.location.href = '../dashboard.html';
+        return;
+      }
+
+      const courseNames = {
+        'essentiel':'Formation Essentiel - Fondamentaux du Digital Marketing',
+        'standard':'Formation Standard - Stratégies Avancées de Marketing Digital',
+        'premium':'Formation Premium - Expert en Marketing Digital'
+      };
+
+      const courseName = courseNames[session.courseId] || session.courseName || 'Formation';
+      const score = Math.round(session.quizScore);
+      const userName = session.fullName || session.userName || session.fullname || 'Utilisateur';
+      const certNumber = `CERT-${Date.now()}-${Math.random().toString(36).substr(2,5).toUpperCase()}`;
+      const completionDate = new Date(session.quizCompletedAt || session.progress && session.progress.lastAccessed || new Date());
+      const formatted = completionDate.toLocaleDateString('fr-FR', {year:'numeric',month:'long',day:'numeric'});
+
+      // Trainer details (update here if needed)
+      const trainerName = 'Aroman EMETSHU';
+      const trainerTitle = 'Directeur - Plateforme de Formation';
+
+      // Fill DOM
+      document.getElementById('cert-user-name').textContent = (userName || 'Utilisateur').toUpperCase();
+      document.getElementById('cert-course-name').textContent = courseName;
+      document.getElementById('detail-score').textContent = `${score}%`;
+      document.getElementById('detail-completion-date').textContent = formatted;
+      document.getElementById('detail-cert-number').textContent = certNumber;
+      document.getElementById('cert-trainer-name').textContent = trainerName;
+      document.getElementById('cert-trainer-title').textContent = trainerTitle;
+      document.getElementById('signature-date').textContent = `Délivré le ${formatted}`;
+      document.getElementById('cert-id-right').textContent = `N° ${certNumber}`;
+
+      // expose data for other scripts
+      window.certificateData = {userName,courseName,score,formatted,certNumber,trainerName};
+    });
+
+    // Load html2canvas on demand
+    function loadHtml2Canvas(){
+      return new Promise((resolve,reject)=>{
+        if(window.html2canvas) return resolve(window.html2canvas);
+        const s=document.createElement('script');
+        s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        s.onload = () => resolve(window.html2canvas);
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    function downloadBlob(blob, filename){
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(()=>URL.revokeObjectURL(link.href),10000);
+    }
+
+    async function captureElement(scale=2){
+      await loadHtml2Canvas();
+      const el = document.getElementById('certificateDisplay');
+      const canvas = await window.html2canvas(el, {scale:scale, useCORS:true, backgroundColor:null});
+      return canvas;
+    }
+
+    async function downloadAsPNG(){
+      try{
+        const canvas = await captureElement(2);
+        canvas.toBlob(blob=>{
+          const name = `Certificat_${(window.certificateData?.userName||'user').replace(/\s+/g,'_')}_${window.certificateData?.certNumber||Date.now()}.png`;
+          downloadBlob(blob,name);
+        }, 'image/png');
+      }catch(e){console.error(e);alert('Erreur lors de la capture. Réessayez.');}
+    }
+
+    async function downloadAsJPG(){
+      try{
+        const canvas = await captureElement(2);
+        const quality = 0.92;
+        canvas.toBlob(blob=>{
+          const name = `Certificat_${(window.certificateData?.userName||'user').replace(/\s+/g,'_')}_${window.certificateData?.certNumber||Date.now()}.jpg`;
+          // convert blob to jpeg if needed by drawing on white background
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = canvas.height;
+          const ctx = tmp.getContext('2d');
+          ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,tmp.width,tmp.height);
+          ctx.drawImage(canvas,0,0);
+          tmp.toBlob(jpegBlob=>downloadBlob(jpegBlob,name),'image/jpeg',quality);
+        });
+      }catch(e){console.error(e);alert('Erreur lors de la capture. Réessayez.');}
+    }
+
+    function shareCertificate(){
+      const data = window.certificateData;
+      if(navigator.share && data){
+        navigator.share({title:'Mon Certificat',text:`J'ai obtenu ${data.score}% à ${data.courseName}`,url:window.location.href}).catch(()=>alert('Partage non supporté'));
+      }else{
+        alert(`Copiez ce message pour partager: J'ai obtenu ${data?.score}% à ${data?.courseName}`);
+      }
+    }
+
+    function logoutUser(){
+      localStorage.removeItem('userSession');
+      window.location.href = '../index.html';
+    }
+  </script>
+</body>
+</html>

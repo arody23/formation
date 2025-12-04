@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monétisez votre audience et devenez indépendant - Standard</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    body {
+      background: #F9FAFB;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      color: #0F1419;
+    }
+
+    .formation-wrapper {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .sidebar {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .sidebar-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .chapters-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .chapter-item {
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .chapter-item:hover {
+      background: #fef3c7;
+      border-left-color: #F59E0B;
+    }
+
+    .chapter-item.active {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: white;
+      border-left-color: #ffffff;
+    }
+
+    .chapter-item.completed {
+      border-left-color: #F59E0B;
+    }
+
+    .chapter-item.completed::before {
+      content: "✓ ";
+      color: #F59E0B;
+      font-weight: 700;
+    }
+
+    .chapter-item-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .chapter-item-duration {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-top: 0.25rem;
+    }
+
+    .main-content {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .chapter-header {
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chapter-title {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .chapter-meta {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .video-container {
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 2rem 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      max-height: 600px;
+      display: block;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: white;
+      font-size: 3rem;
+    }
+
+    .chapter-content {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #333;
+    }
+
+    .chapter-content h3 {
+      font-size: 1.3rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--primary);
+    }
+
+    .chapter-content h4 {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      color: #F59E0B;
+    }
+
+    .chapter-content ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .chapter-content p {
+      margin-bottom: 1rem;
+    }
+
+    /* Code Blocks */
+    .chapter-content pre {
+      background: #F3F4F6;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border-left: 4px solid #6366F1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      line-height: 1.5;
+    }
+
+    .chapter-content code {
+      font-family: 'Courier New', 'Monaco', 'Courier', monospace;
+      color: #0F1419;
+      font-size: 0.95rem;
+      background: transparent;
+      padding: 0;
+    }
+
+    .chapter-content pre code {
+      display: block;
+      overflow-x: auto;
+    }
+
+    .chapter-content pre::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .chapter-content pre::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+    }
+
+    .chapter-content pre::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.3);
+      border-radius: 4px;
+    }
+
+    .chapter-content pre::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.6);
+    }
+
+    .chapter-navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #f0f0f0;
+    }
+
+    .btn-nav {
+      flex: 1;
+      padding: 12px 20px;
+      border: 2px solid #F59E0B;
+      background: white;
+      color: #F59E0B;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      background: #F59E0B;
+      color: white;
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-nav-primary {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: white;
+      border: none;
+    }
+
+    .btn-nav-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-complete {
+      background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+      color: white;
+      border: none;
+    }
+
+    .btn-complete:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+    }
+
+    .progress-top {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B 0%, #D97706 100%);
+      transition: width 0.5s ease;
+    }
+
+    .progress-text {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    .btn-quiz {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      margin-top: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-quiz:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-quiz:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .formation-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: relative;
+        top: auto;
+      }
+
+      .chapter-navigation {
+        flex-direction: column;
+      }
+
+      .btn-nav {
+        width: 100%;
+      }
+
+      .main-content {
+        padding: 1.5rem;
+      }
+
+      .chapter-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header style="background: white; border-bottom: 1px solid #E5E7EB; padding: 1rem 0; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; gap: 2rem;">
+      <a href="../dashboard.html" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: white; border: none; border-radius: 0.75rem; cursor: pointer; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; display: inline-flex; align-items: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(245, 158, 11, 0.15)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+        ← Retour
+      </a>
+      <h1 style="margin: 0; font-size: 1.5rem; font-weight: 700; color: #0F1419;" id="header-title">Monétisez votre audience et devenez indépendant</h1>
+      <button onclick="logoutUser()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: white; border: none; border-radius: 0.75rem; cursor: pointer; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(245, 158, 11, 0.15)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+        Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+    <div class="progress-top">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+      <div class="progress-text" id="progress-text">0% de progression</div>
+    </div>
+
+    <div class="formation-wrapper">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-title">📚 Chapitres</div>
+        <div class="chapters-list" id="chapters-list"></div>
+      </aside>
+
+      <!-- Main Content -->
+      <section class="main-content">
+        <div class="chapter-header">
+          <h1 class="chapter-title" id="chapter-title">Chapitre 1</h1>
+          <div class="chapter-meta">
+            <span>⏱️ <span id="chapter-duration">18 min</span></span>
+            <span id="chapter-number">Chapitre 1/7</span>
+          </div>
+        </div>
+
+        <div class="video-container">
+          <div class="video-placeholder" id="video-placeholder">📹</div>
+        </div>
+
+        <div class="chapter-content" id="chapter-content"></div>
+
+        <button class="btn-quiz" id="btn-take-quiz" style="display: none;">
+          📝 Passer au Quiz Final
+        </button>
+
+        <div class="chapter-navigation">
+          <button class="btn-nav" id="btn-prev" disabled>← Chapitre Précédent</button>
+          <button class="btn-nav btn-nav-primary" id="btn-next">Chapitre Suivant →</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: #f8f9fa; border-top: 1px solid #ddd; padding: 2rem 0; margin-top: 3rem; text-align: center; color: #666;">
+    <div class="container">
+      <p>&copy; 2025 Aroman EMETSHU - Formation. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/formations.js"></script>
+  <script>
+    let currentChapter = 1;
+    let manager;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const session = getCurrentSession();
+      if (!session || session.courseId !== 'standard') {
+        window.location.href = '../index.html';
+        return;
+      }
+
+      // Mettre à jour le titre du header avec le nom de l'utilisateur
+      const headerTitle = document.getElementById('header-title');
+      if (session.fullName) {
+        headerTitle.textContent = `Bienvenue, ${session.fullName}`;
+      }
+
+      manager = initFormation('standard');
+      currentChapter = session.progress.currentChapter || 1;
+      loadChapter(currentChapter);
+      updateUI();
+
+      document.getElementById('btn-next').addEventListener('click', nextChapter);
+      document.getElementById('btn-prev').addEventListener('click', prevChapter);
+      document.getElementById('btn-take-quiz').addEventListener('click', goToQuiz);
+
+      generateChaptersList();
+    });
+
+    function generateChaptersList() {
+      const chaptersContainer = document.getElementById('chapters-list');
+      chaptersContainer.innerHTML = '';
+
+      manager.courseData.chapters.forEach(chapter => {
+        const item = document.createElement('div');
+        item.className = 'chapter-item';
+        if (chapter.number === currentChapter) item.classList.add('active');
+        if (manager.isChapterCompleted(chapter.number)) item.classList.add('completed');
+
+        item.innerHTML = `
+          <div class="chapter-item-text">Ch. ${chapter.number}</div>
+          <div class="chapter-item-duration">${chapter.duration}</div>
+        `;
+
+        item.addEventListener('click', () => loadChapter(chapter.number));
+        chaptersContainer.appendChild(item);
+      });
+    }
+
+    function loadChapter(number) {
+      const chapter = manager.getChapter(number);
+      if (!chapter) return;
+
+      currentChapter = number;
+
+      document.getElementById('chapter-title').textContent = chapter.title;
+      document.getElementById('chapter-duration').textContent = chapter.duration;
+      document.getElementById('chapter-number').textContent = `Chapitre ${number}/${manager.courseData.chapters.length}`;
+      document.getElementById('chapter-content').innerHTML = chapter.content;
+
+      // Charger la vidéo
+      const videoContainer = document.getElementById('video-placeholder');
+      if (chapter.video) {
+        videoContainer.innerHTML = `<video controls controlsList="nodownload" style="width: 100%; height: 100%; object-fit: contain;"><source src="${chapter.video}" type="video/mp4">Votre navigateur ne supporte pas la lecture de vidéo.</video>`
+      } else {
+        videoContainer.innerHTML = '📹';
+      }
+
+      generateChaptersList();
+
+      manager.userSession.progress.currentChapter = number;
+      localStorage.setItem('userSession', JSON.stringify(manager.userSession));
+
+      updateUI();
+      window.scrollTo(0, 0);
+    }
+
+    function nextChapter() {
+      if (currentChapter < manager.courseData.chapters.length) {
+        manager.markChapterComplete(currentChapter);
+        loadChapter(currentChapter + 1);
+      } else if (currentChapter === manager.courseData.chapters.length) {
+        goToQuiz();
+      }
+    }
+
+    function prevChapter() {
+      if (currentChapter > 1) {
+        loadChapter(currentChapter - 1);
+      }
+    }
+
+    function updateUI() {
+      const total = manager.courseData.chapters.length;
+      const completed = manager.userSession.progress.completedChapters.length;
+      const progress = Math.round((completed / total) * 100);
+
+      document.getElementById('progress-fill').style.width = progress + '%';
+      document.getElementById('progress-text').textContent = `${progress}% de progression`;
+
+      document.getElementById('btn-prev').disabled = currentChapter === 1;
+      document.getElementById('btn-next').textContent = currentChapter === total ? '📝 Passer au Quiz →' : 'Chapitre Suivant →';
+
+      const canTakeQuiz = manager.canAccessQuiz();
+      document.getElementById('btn-take-quiz').style.display = canTakeQuiz ? 'block' : 'none';
+    }
+
+    function goToQuiz() {
+      window.location.href = `../quiz/quiz-standard.html`;
+    }
+  </script>
+  <link rel="stylesheet" href="formation-shared.css">
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plateforme de Formation | Aroman EMETSHU</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+    }
+
+    /* Animated Background Layers */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(135deg, rgba(102, 126, 234, 0.35) 0%, rgba(118, 75, 162, 0.35) 100%),
+        url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-blend-mode: overlay;
+      filter: blur(2px);
+      z-index: -2;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%);
+      z-index: -1;
+    }
+
+    @keyframes gradientShift {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-50px, -50px); }
+      50% { transform: translate(0, 0); }
+      75% { transform: translate(50px, 50px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 1rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+      color: #1f2937;
+      font-weight: 500;
+    }
+
+    .input-field::placeholder {
+      color: #9ca3af;
+      font-weight: 400;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #667eea;
+      background: #f9fafb;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 3.5rem 2.5rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      animation: cardFloat 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+      background-size: 200% 100%;
+      animation: gradientSlide 3s ease infinite;
+    }
+
+    @keyframes cardFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes gradientSlide {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-login {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 3rem;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .login-header h1 {
+      font-size: 1.75rem;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .login-header p {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.85rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-visibility {
+      position: absolute;
+      right: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: #9ca3af;
+      transition: all 0.3s ease;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .toggle-visibility:hover {
+      color: #667eea;
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .toggle-visibility svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+      fill: none;
+      stroke: currentColor;
+    }
+
+    .input-wrapper .input-field {
+      padding-right: 3rem;
+    }
+
+    #login-error {
+      display: none;
+      padding: 1rem;
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+      border-radius: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      animation: slideDown 0.3s ease;
+    }
+
+    #login-error.show {
+      display: block;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #login-form button {
+      width: 100%;
+      padding: 1.1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      letter-spacing: 0.3px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #login-form button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.5s ease;
+    }
+
+    #login-form button:hover:not(:disabled)::before {
+      left: 100%;
+    }
+
+    #login-form button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    #login-form button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 2.5rem 1.5rem;
+        border-radius: 1.5rem;
+      }
+
+      .login-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .logo-login {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      #access-key {
+        padding: 0.9rem 3rem 0.9rem 1rem;
+      }
+
+      #login-form button {
+        padding: 0.9rem;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="logo-login">🎓</div>
+        <h1>Ma Formation</h1>
+        <p>Accédez à votre plateforme</p>
+      </div>
+
+      <div id="login-error"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="full-name">Nom Complet</label>
+          <input 
+            type="text" 
+            id="full-name" 
+            class="input-field"
+            placeholder="Votre nom complet..."
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="access-key">Clé d'accès</label>
+          <input 
+            type="text" 
+            id="access-key" 
+            class="input-field"
+            placeholder="Entrez votre clé..."
+            autocomplete="off"
+            required
+          >
+        </div>
+
+        <button type="submit">Se connecter</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const fullNameInput = document.getElementById('full-name');
+      const accessKeyInput = document.getElementById('access-key');
+      const loginForm = document.getElementById('login-form');
+      const loginError = document.getElementById('login-error');
+
+      // Form submission
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const fullName = fullNameInput.value.trim();
+        const key = accessKeyInput.value.trim().toUpperCase();
+        
+        loginError.classList.remove('show');
+
+        if (!fullName) {
+          showError('Veuillez entrer votre nom complet');
+          return;
+        }
+
+        if (!key) {
+          showError('Veuillez entrer votre clé d\'accès');
+          return;
+        }
+
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="loading"></span>Vérification...';
+
+        setTimeout(() => {
+          try {
+            const userSession = new UserSession();
+            console.log('Attempting to create session with:', { key, fullName });
+            const success = userSession.createSession(key, fullName);
+            console.log('Session creation result:', success);
+            console.log('Current session:', userSession.currentSession);
+
+            if (success) {
+              console.log('Success! Redirecting to dashboard...');
+              window.location.href = 'dashboard.html';
+            } else {
+              showError('Clé d\'accès invalide. Vérifiez et réessayez.');
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = 'Se connecter';
+            }
+          } catch (error) {
+            console.error('Error during login:', error);
+            showError('Erreur de connexion. Réessayez.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Se connecter';
+          }
+        }, 600);
+      });
+
+      function showError(message) {
+        loginError.textContent = message;
+        loginError.classList.add('show');
+        setTimeout(() => {
+          loginError.classList.remove('show');
+        }, 4000);
+      }
+
+      // Allow Enter key
+      accessKeyInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          loginForm.dispatchEvent(new Event('submit'));
+        }
+      });
+    });
+  </script>
+</body>
+</html>

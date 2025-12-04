@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Plateforme de Formation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        background: #F9FAFB;
+        color: #0F1419;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      /* Header Styles */
+      header {
+        background: white;
+        border-bottom: 1px solid #E5E7EB;
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0F1419;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .user-info {
+        font-size: 0.95rem;
+        color: #6B7280;
+      }
+
+      .user-name {
+        font-weight: 600;
+        color: #0F1419;
+      }
+
+      .btn-logout {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-logout:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        filter: brightness(1.05);
+      }
+
+      /* Hero Section */
+      .dashboard-hero {
+        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+        color: white;
+        padding: 5rem 2rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Colors for different levels */
+      .dashboard-hero.essentiel {
+        background: linear-gradient(135deg, #2d9cdb 0%, #667eea 100%);
+      }
+
+      .dashboard-hero.standard {
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      }
+
+      .dashboard-hero.premium {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      }
+
+      .dashboard-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 600px;
+        height: 600px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .dashboard-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -20%;
+        left: -5%;
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        animation: float 8s ease-in-out infinite reverse;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(30px); }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.1;
+        letter-spacing: -1px;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 3rem;
+        font-weight: 500;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .stat-box {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 2rem;
+        border-radius: 1.25rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .stat-box:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-4px);
+      }
+
+      .stat-value {
+        font-size: 2.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      .stat-label {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+      }
+
+      /* Course Section */
+      .course-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0F1419;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #6366F1;
+        display: inline-block;
+      }
+
+      .course-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      /* Course Card Styles */
+      .course-card {
+        background: white;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        border: 1px solid #E5E7EB;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .course-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+        border-color: #6366F1;
+      }
+
+      .card-header {
+        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 320px;
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+      }
+
+      .card-header.standard {
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      }
+
+      .card-header.premium {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      }
+
+      .level-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.25);
+        padding: 0.6rem 1.5rem;
+        border-radius: 9999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-header h2 {
+        color: white;
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-body {
+        padding: 2.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .course-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .meta-item {
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #E5E7EB;
+      }
+
+      /* Section Présentation Video */
+      .presentation-section {
+        margin-bottom: 4rem;
+        padding: 3rem 0;
+        border-bottom: 2px solid #E5E7EB;
+      }
+
+      .presentation-container {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 3rem;
+        align-items: center;
+      }
+
+      .video-portrait {
+        width: 100%;
+        max-width: 350px;
+        aspect-ratio: 9 / 16;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        background: #F3F4F6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+      }
+
+      .video-portrait video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .presentation-content h3 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #0F1419;
+        margin-bottom: 1rem;
+      }
+
+      .presentation-content .role {
+        font-size: 1.125rem;
+        color: #6B7280;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .presentation-content p {
+        font-size: 1rem;
+        color: #4B5563;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+
+      .presentation-content .highlight {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        border-left: 4px solid #6366F1;
+        margin-top: 1.5rem;
+      }
+
+      @media (max-width: 1024px) {
+        .presentation-container {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .video-portrait {
+          max-width: 100%;
+          width: 100%;
+        }
+
+        .presentation-content h3 {
+          font-size: 1.5rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .presentation-section {
+          padding: 2rem 0;
+          margin-bottom: 2rem;
+        }
+
+        .video-portrait {
+          max-width: 280px;
+          margin: 0 auto;
+        }
+      }
+
+      .meta-label {
+        font-size: 0.85rem;
+        color: #6B7280;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.75rem;
+      }
+
+      .meta-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0F1419;
+      }
+
+      .progress-section {
+        margin-bottom: 2rem;
+      }
+
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #0F1419;
+      }
+
+      .progress-track {
+        width: 100%;
+        height: 10px;
+        background: #F3F4F6;
+        border-radius: 9999px;
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%);
+        border-radius: 9999px;
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      .progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 2s infinite;
+      }
+
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+
+      .course-card.standard .progress-fill {
+        background: linear-gradient(90deg, #F59E0B 0%, #D97706 100%);
+      }
+
+      .course-card.premium .progress-fill {
+        background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+      }
+
+      .cert-badge {
+        padding: 1rem 1.5rem;
+        background: rgba(16, 185, 129, 0.1);
+        color: #10B981;
+        border: 2px solid #10B981;
+        border-radius: 0.75rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .card-footer {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .btn-continue {
+        flex: 1;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-continue:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+        filter: brightness(1.05);
+      }
+
+      .btn-continue.standard {
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      }
+
+      .btn-continue.premium {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      }
+
+      .btn-continue:active {
+        transform: translateY(0);
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .course-card {
+          flex-direction: column;
+        }
+
+        .card-header {
+          width: 100%;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        header .container {
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+
+        .logo {
+          width: 100%;
+        }
+
+        .header-right {
+          width: 100%;
+          gap: 1rem;
+        }
+
+        .user-info {
+          flex: 1;
+        }
+
+        .dashboard-hero {
+          padding: 3rem 1.5rem;
+          margin-bottom: 2rem;
+        }
+
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1rem;
+        }
+
+        .hero-stats {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .stat-box {
+          padding: 1.5rem;
+        }
+
+        .stat-value {
+          font-size: 2rem;
+        }
+
+        .course-section {
+          padding: 0 1.5rem 2rem;
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+        }
+
+        .card-body {
+          padding: 1.5rem;
+        }
+
+        .course-meta {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .meta-item {
+          padding-bottom: 1rem;
+        }
+
+        .btn-continue {
+          padding: 0.875rem;
+          font-size: 0.95rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .dashboard-hero {
+          padding: 2rem 1rem;
+        }
+
+        .hero-title {
+          font-size: 1.5rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .card-header {
+          width: 100%;
+          padding: 2rem;
+        }
+
+        .card-body {
+          padding: 1.25rem;
+        }
+
+        .stat-value {
+          font-size: 1.75rem;
+        }
+      }
+    </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">📚 Mes Formations</div>
+      <div class="header-right">
+        <div class="user-info">
+          Bienvenue, <span class="user-name" id="user-name">Utilisateur</span>
+        </div>
+        <button class="btn-logout" onclick="logoutUser()">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="dashboard-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Continuez votre apprentissage</h1>
+      <p class="hero-subtitle">Découvrez votre progression et poursuivez votre formation</p>
+      
+      <div class="hero-stats" id="stats-container">
+        <!-- Générées par JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Présentation Section -->
+  <div class="container">
+    <section class="presentation-section">
+      <div class="presentation-container">
+        <div class="video-portrait" id="video-presentation">
+          <video controls style="width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/presentation.mp4" type="video/mp4">
+            📹 Votre navigateur ne supporte pas les vidéos
+          </video>
+        </div>
+        <div class="presentation-content">
+          <h3>Merci de votre confiance! 🙏</h3>
+          <div class="role">👨‍💼 Aroman EMETSHU</div>
+          <p><strong>Spécialiste en Marketing d'Influence & Monétisation d'Audience</strong></p>
+          <p>Bienvenue dans cette formation dédiée à la <strong>monétisation de votre audience</strong> et à votre <strong>indépendance financière</strong>!</p>
+          <p>Avec plusieurs années d'expérience dans le marketing d'influence et la création de revenus durables, je vous partage les stratégies éprouvées pour transformer votre audience en source de revenus récurrents.</p>
+          <div class="highlight">
+            <p><strong>🎯 Notre objectif:</strong> Vous rendre indépendant en monétisant votre influence et votre audience</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Course Section -->
+  <div class="container">
+    <section class="course-section">
+      <h2 class="section-title">Votre Formation</h2>
+
+      <div class="course-grid" id="course-container">
+        <!-- Générée par JS -->
+      </div>
+    </section>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const session = getCurrentSession();
+        
+        if (!session) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        console.log('Session data:', session);
+
+        // Update user name - afficher le nom complet de l'utilisateur
+        const userNameEl = document.getElementById('user-name');
+        if (userNameEl) {
+          if (session.fullName && session.fullName.trim()) {
+            userNameEl.textContent = session.fullName;
+            console.log('Displaying user name:', session.fullName);
+          } else {
+            userNameEl.textContent = 'Utilisateur';
+            console.log('No fullName found in session, using default');
+          }
+        }
+
+        const courseId = session.courseId;
+        const totalChapters = session.chapters || 0;
+        const completedChapters = session.progress?.completedChapters?.length || 0;
+        const progressPercent = totalChapters > 0 ? Math.round((completedChapters / totalChapters) * 100) : 0;
+
+        // Update stats
+        const statsHtml = `
+          <div class="stat-box">
+            <div class="stat-value">${progressPercent}%</div>
+            <div class="stat-label">Progression Globale</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">${completedChapters}/${totalChapters}</div>
+            <div class="stat-label">Chapitres Complétés</div>
+          </div>
+        `;
+        document.getElementById('stats-container').innerHTML = statsHtml;
+
+        // Determine course level
+        let levelText = 'Essentiel';
+        let levelClass = 'essentiel';
+        if (courseId === 'standard') {
+          levelText = 'Standard';
+          levelClass = 'standard';
+        } else if (courseId === 'premium') {
+          levelText = 'Premium';
+          levelClass = 'premium';
+        }
+
+        // Apply level class to hero
+        const heroSection = document.querySelector('.dashboard-hero');
+        if (heroSection) {
+          heroSection.classList.add(levelClass);
+        }
+
+        // Build course card
+        const courseCard = `
+          <div class="course-card ${levelClass}">
+            <div class="card-header ${levelClass}">
+              <div class="level-badge">${levelText}</div>
+              <h2>${session.courseName}</h2>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="course-meta">
+                  <div class="meta-item">
+                    <div class="meta-label">Chapitres</div>
+                    <div class="meta-value">${completedChapters}/${totalChapters}</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Progression</div>
+                    <div class="meta-value">${progressPercent}%</div>
+                  </div>
+                </div>
+
+                <div class="progress-section">
+                  <div class="progress-label">
+                    <span>Avancement de la Formation</span>
+                    <span>${progressPercent}%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                  </div>
+                </div>
+
+                ${session.certificat ? '<div class="cert-badge">✓ Certificat Disponible</div>' : ''}
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-continue ${levelClass}" onclick="goToCourse()">
+                  Continuer la Formation
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('course-container').innerHTML = courseCard;
+      }, 300);
+    });
+
+    function goToCourse() {
+      const session = getCurrentSession();
+      window.location.href = `formations/${session.courseId}.html`;
+    }
+
+    function logoutUser() {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

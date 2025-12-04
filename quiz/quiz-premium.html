@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz - Formation Premium</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="quiz-shared.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #059669;
+      --secondary: #10B981;
+      --gradient-primary: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      --border: #e5e7eb;
+      --light-gray: #f9fafb;
+      --text-dark: #1f2937;
+      --text-muted: #6b7280;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      min-height: 100vh;
+      padding: 2rem 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1.5rem 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 2rem;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1f2937;
+      white-space: nowrap;
+    }
+
+    .user-info {
+      flex: 1;
+      text-align: center;
+      font-weight: 600;
+      color: #059669;
+      font-size: 0.95rem;
+    }
+
+    .btn-logout {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
+    }
+
+    main {
+      padding: 2rem 0;
+    }
+
+    .quiz-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e9ecef;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .quiz-header {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: white;
+      padding: 3rem 2.5rem;
+      text-align: center;
+    }
+
+    .quiz-header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-header p {
+      font-size: 1rem;
+      opacity: 0.95;
+    }
+
+    #quiz-content {
+      padding: 2.5rem;
+    }
+
+    .question-number {
+      font-size: 0.85rem;
+      color: #059669;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .question-text {
+      font-size: 1.4rem;
+      color: #1f2937;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .option-item {
+      padding: 1.2rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-height: 60px;
+      width: 100%;
+    }
+
+    .option-item:hover {
+      border-color: #059669;
+      background: rgba(5, 150, 105, 0.05);
+      transform: translateX(4px);
+    }
+
+    .option-item input[type="radio"] {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      min-height: 24px;
+      cursor: pointer;
+      accent-color: #059669;
+      flex-shrink: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .option-item label {
+      cursor: pointer;
+      font-weight: 500;
+      margin: 0;
+      flex: 1;
+      color: #374151;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      background: white;
+      color: #059669;
+      border-radius: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: #059669;
+      background: #059669;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn.submit {
+      border-color: #27ae60;
+      background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+      color: white;
+    }
+
+    .results {
+      display: none;
+      padding: 3rem 2.5rem;
+      text-align: center;
+    }
+
+    .results.show {
+      display: block;
+    }
+
+    .score {
+      font-size: 4rem;
+      font-weight: 700;
+      margin: 2rem 0;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .status {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 1.5rem 0;
+    }
+
+    .status.passed {
+      color: #27ae60;
+    }
+
+    .status.failed {
+      color: #e74c3c;
+    }
+
+    .message {
+      font-size: 1rem;
+      color: #6b7280;
+      margin: 2rem 0;
+    }
+
+    .details {
+      background: #f9fafb;
+      padding: 2rem;
+      border-radius: 1rem;
+      margin: 2rem 0;
+      border: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      color: #374151;
+    }
+
+    .detail-item:not(:last-child) {
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 0.75rem;
+    }
+
+    .btn-certificate {
+      background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-certificate:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
+    }
+
+    .btn-back {
+      background: transparent;
+      color: #059669;
+      padding: 1rem 2rem;
+      border: 2px solid #059669;
+      border-radius: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+      background: #059669;
+      color: white;
+    }
+
+    footer {
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+      padding: 2rem 0;
+      margin-top: 3rem;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    @media (max-width: 768px) {
+      .navbar { gap: 1rem; }
+      .user-info { font-size: 0.85rem; }
+      .quiz-header { padding: 2rem 1.5rem; }
+      .quiz-header h1 { font-size: 1.5rem; }
+      .question-text { font-size: 1.1rem; }
+      .btn-container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">📚 Formation</div>
+        <div class="user-info" id="user-info"></div>
+        <button class="btn-logout" id="logout-btn">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="quiz-wrapper">
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+
+      <div id="quiz-content">
+        <div class="quiz-header">
+          <h1>Quiz Final</h1>
+          <p>Répondez aux questions pour valider votre formation</p>
+        </div>
+
+        <div id="questions-container"></div>
+
+        <div class="btn-container">
+          <button class="btn" id="btn-prev" disabled>← Précédent</button>
+          <button class="btn submit" id="btn-next">Suivant →</button>
+        </div>
+      </div>
+
+      <div id="results-container" class="results">
+        <div class="quiz-header">
+          <h1>Résultats</h1>
+        </div>
+        <div style="padding: 2.5rem;">
+          <div class="score" id="score-display">0%</div>
+          <div class="status" id="status-display"></div>
+          <p class="message" id="message-display"></p>
+          <div class="details">
+            <div class="detail-item">
+              <span>Bonnes réponses:</span>
+              <span id="correct-display">0/10</span>
+            </div>
+            <div class="detail-item">
+              <span>Score requis:</span>
+              <span id="required-display">75%</span>
+            </div>
+          </div>
+          <button class="btn-certificate" id="btn-cert" style="display: none;">
+            🎖️ Télécharger mon Certificat
+          </button>
+          <button class="btn-back" onclick="goToDashboard()">
+            ← Retour au Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Aroman EMETSHU - Formation. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/quiz.js"></script>
+  <script src="../assets/js/certificate.js"></script>
+  <script>
+    let quizMgr;
+    let currentQuestion = 0;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const session = window.getCurrentSession();
+      
+      if (!session || session.courseId !== 'premium') {
+        window.location.href = '../index.html';
+        return;
+      }
+
+      const userInfoEl = document.getElementById('user-info');
+      if (userInfoEl && session.courseName) {
+        userInfoEl.textContent = 'Formation: ' + session.courseName;
+      }
+
+      quizMgr = initQuiz('premium');
+      if (!quizMgr || !quizMgr.quizData) {
+        alert('Erreur: Impossible de charger le quiz');
+        return;
+      }
+
+      renderQuestions();
+      updateUI();
+
+      document.getElementById('btn-next').addEventListener('click', nextQuestion);
+      document.getElementById('btn-prev').addEventListener('click', prevQuestion);
+      document.getElementById('btn-cert').addEventListener('click', downloadCert);
+      document.getElementById('logout-btn').addEventListener('click', logout);
+    });
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      if (!quizMgr || !quizMgr.quizData) return;
+
+      const question = quizMgr.quizData.questions[currentQuestion];
+      if (!question) return;
+
+      let html = `<div class="question-number">Question ${currentQuestion + 1} / ${quizMgr.quizData.questions.length}</div>
+                  <div class="question-text">${question.question}</div>
+                  <div class="options">`;
+
+      question.options.forEach((option, idx) => {
+        const isChecked = quizMgr.currentAnswers[question.id] === idx ? 'checked' : '';
+        html += `<div class="option-item">
+                   <input type="radio" id="opt-${question.id}-${idx}" name="q${question.id}" 
+                          value="${idx}" ${isChecked} onchange="selectOption(${question.id}, ${idx})">
+                   <label for="opt-${question.id}-${idx}">${option}</label>
+                 </div>`;
+      });
+
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function selectOption(qId, oIdx) {
+      if (quizMgr) {
+        quizMgr.setAnswer(qId, oIdx);
+      }
+    }
+
+    function nextQuestion() {
+      if (!quizMgr) return;
+      
+      const question = quizMgr.quizData.questions[currentQuestion];
+      if (quizMgr.currentAnswers[question.id] === undefined) {
+        alert('Veuillez sélectionner une réponse');
+        return;
+      }
+
+      if (currentQuestion < quizMgr.quizData.questions.length - 1) {
+        currentQuestion++;
+        renderQuestions();
+        updateUI();
+      } else {
+        submitQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestions();
+        updateUI();
+      }
+    }
+
+    function updateUI() {
+      if (!quizMgr) return;
+      
+      const progress = ((currentQuestion + 1) / quizMgr.quizData.questions.length) * 100;
+      document.getElementById('progress-fill').style.width = progress + '%';
+      
+      document.getElementById('btn-prev').disabled = currentQuestion === 0;
+      const isLast = currentQuestion === quizMgr.quizData.questions.length - 1;
+      document.getElementById('btn-next').textContent = isLast ? '✓ Terminer' : 'Suivant →';
+    }
+
+    function submitQuiz() {
+      if (!quizMgr) return;
+
+      const results = quizMgr.getResults();
+      quizMgr.saveScore(results.score);
+
+      document.getElementById('score-display').textContent = results.score + '%';
+      document.getElementById('correct-display').textContent = `${results.correctCount}/${results.totalCount}`;
+      document.getElementById('required-display').textContent = `${quizMgr.quizData.passingScore}%`;
+
+      const statusEl = document.getElementById('status-display');
+      const msgEl = document.getElementById('message-display');
+
+      if (results.passed) {
+        statusEl.textContent = '✓ Félicitations ! Vous avez réussi !';
+        statusEl.className = 'status passed';
+        
+        const hasCert = quizMgr.hasCertificate();
+        console.log('submitQuiz() - hasCertificate() returned:', hasCert);
+        console.log('Session data:', quizMgr.userSession);
+        
+        msgEl.textContent = hasCert ? 'Votre certificat est prêt.' : 'Formation complétée!';
+        if (hasCert) {
+          console.log('Affichage du bouton certificat');
+          document.getElementById('btn-cert').style.display = 'inline-block';
+        }
+      } else {
+        statusEl.textContent = '❌ Vous n\'avez pas réussi';
+        statusEl.className = 'status failed';
+        msgEl.textContent = `Vous avez besoin d'au moins ${quizMgr.quizData.passingScore}%.`;
+      }
+
+      document.getElementById('quiz-content').style.display = 'none';
+      document.getElementById('results-container').classList.add('show');
+    }
+
+    function downloadCert() {
+      if (quizMgr && quizMgr.userSession) {
+        window.location.href = '../certificates/certificate.html';
+      } else {
+        alert('Erreur: Données de session indisponibles');
+      }
+    }
+
+    function goToDashboard() {
+      window.location.href = '../dashboard.html';
+    }
+
+    function logout() {
+      localStorage.removeItem('userSession');
+      window.location.href = '../index.html';
+    }
+  </script>
+</body>
+</html>

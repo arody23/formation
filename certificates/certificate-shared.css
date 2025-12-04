@@ -1,0 +1,259 @@
+/* ========================================
+   STYLES CERTIFICATS
+   ======================================== */
+
+.certificate-header {
+  background: var(--gradient-primary);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 3rem;
+}
+
+.certificate-header h1 {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.certificate-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+}
+
+.certificate-viewer {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+}
+
+.certificate-display {
+  background: var(--gradient-primary);
+  border-radius: 1.5rem;
+  padding: 4rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-xl);
+}
+
+.certificate-display::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 30px); }
+}
+
+.certificate-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cert-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.cert-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cert-info {
+  font-size: 1.1rem;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+}
+
+.cert-number {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 1rem;
+}
+
+.certificate-details {
+  background: white;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.detail-item {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-download {
+  background: var(--gradient-primary);
+  color: white;
+}
+
+.btn-download:hover {
+  filter: brightness(1.05);
+}
+
+.btn-share {
+  background: var(--light-gray);
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.btn-share:hover {
+  background: var(--border);
+}
+
+.btn-dashboard {
+  background: var(--light-gray);
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.btn-dashboard:hover {
+  background: var(--border);
+}
+
+.cert-message {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--success);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  margin: 2rem 0;
+  color: var(--success);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .certificate-display {
+    padding: 2rem;
+    aspect-ratio: auto;
+    min-height: 400px;
+  }
+
+  .cert-title {
+    font-size: 1.5rem;
+  }
+
+  .cert-info {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .btn-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .certificate-header {
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .certificate-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .certificate-display {
+    padding: 1.5rem;
+    min-height: 300px;
+  }
+
+  .cert-icon {
+    font-size: 2.5rem;
+  }
+
+  .cert-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .cert-info {
+    font-size: 0.9rem;
+  }
+
+  .certificate-details {
+    padding: 1.5rem;
+  }
+}
